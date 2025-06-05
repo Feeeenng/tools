@@ -1,0 +1,31 @@
+- name: install dpendencices
+  yum:
+   name:
+    - yum-utils
+
+- name: 添加阿里云 Docker CE 源
+  get_url:
+    url: https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: '0644'
+
+
+- name: 安装指定版本 Docker v20.10.8
+  yum:
+    name:
+      - docker-ce-20.10.8
+      - docker-ce-cli-20.10.8
+      - containerd.io
+    state: present
+
+- name: 启动 Docker 服务
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+
+- name: 设置 Docker 服务为开机自启
+  systemd:
+    name: docker
+    enabled: yes

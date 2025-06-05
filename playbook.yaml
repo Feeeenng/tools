@@ -1,0 +1,12 @@
+---
+- name: setup HPC soft stack
+  hosts: all
+  become: yes
+  gather_facts: false
+ 
+
+  roles:
+    - docker
+  #  - slurm
+  #  - nextflow
+  #  - apptainer
