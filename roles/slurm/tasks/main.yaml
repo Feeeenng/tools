@@ -1,0 +1,46 @@
+- name: 安装 MUNGE
+  yum:
+    name:
+      - munge
+      - munge-devel
+      - munge-libs
+    state: present
+
+- name: 确保 /etc/munge 存在
+  file:
+    path: /etc/munge
+    state: directory
+    owner: munge
+    group: munge
+    mode: '0700'
+
+# 仅在控制节点生成 key
+- name: 生成 MUNGE key（仅在 master）
+  command: /usr/sbin/create-munge-key
+  when: inventory_hostname in groups['munge_master']
+  args:
+    creates: /etc/munge/munge.key
+
+# 获取控制节点生成的 key
+- name: 从 master 获取 MUNGE key
+  fetch:
+    src: /etc/munge/munge.key
+    dest: ./munge.key
+    flat: yes
+  when: inventory_hostname in groups['munge_master']
+
+# 分发 key 到所有节点
+- name: 分发 MUNGE key 到所有节点
+  copy:
+    src: ./munge.key
+    dest: /etc/munge/munge.key
+    owner: munge
+    group: munge
+    mode: '0400'
+
+- name: 启动并设置 MUNGE 开机自启
+  systemd:
+    name: munge
+    state: started
+    enabled: yes
+

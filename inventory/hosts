@@ -1,6 +1,8 @@
 [all]
 192.168.124.[27:29]
 
+[munge_master]
+192.168.124.27
 
 [all:vars]
 ansible_user=root
