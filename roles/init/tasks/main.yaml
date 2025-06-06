@@ -1,0 +1,43 @@
+---
+- name: disabled seliunx
+  command: setenforce 0
+  when: ansible_selinux.status == "enabled"
+  ignore_errors: yes
+
+- name: 永久关闭 SELinux（修改 config 文件）
+  replace:
+    path: /etc/selinux/config
+    regexp: '^SELINUX=.*'
+    replace: 'SELINUX=disabled'
+
+- name: 停止并禁用 firewalld（可选）
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+
+- name: 安装 wget 和 epel-release（如果还没装）
+  yum:
+    name:
+      - wget
+      - epel-release
+    state: present
+
+
+- name: 备份原 YUM 源配置
+  shell: cp -r /etc/yum.repos.d /etc/yum.repos.d.bak
+  args:
+    creates: /etc/yum.repos.d.bak
+
+- name: 下载阿里云 CentOS YUM 源（适用于 CentOS 7）
+  get_url:
+    url: https://mirrors.aliyun.com/repo/Centos-7.repo
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    mode: '0644'
+  when: ansible_distribution_major_version == "7"
+
+
+- name: 清理缓存并生成新缓存
+  shell: yum clean all && yum makecache

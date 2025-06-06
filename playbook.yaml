@@ -2,10 +2,11 @@
 - name: setup HPC soft stack
   hosts: all
   become: yes
-  gather_facts: false
+  gather_facts: true
  
 
   roles:
+    - init
     - docker
   #  - slurm
   #  - nextflow
