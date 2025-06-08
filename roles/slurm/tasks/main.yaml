@@ -1,69 +1,66 @@
----
-- name: Install Slurm build dependencies
-  yum:
-    name:
-      - rpm-build
-      - gcc
-      - gcc-c++
-      - make
-      - munge-devel
-      - pam-devel
-      - numactl-devel
-      - readline-devel
-      - openssl-devel
-      - perl-ExtUtils-MakeMaker
-    state: present
+   - name: Create slurm group if not exists
+     group:
+       name: "{{ slurm_group }}"
+       state: present 
+   - name: Ensure slurm user exists
+     user:
+       name: "{{ slurm_user }}"
+       group: "{{ slurm_group }}"
+       createhome: no
+       system: yes
 
-- name: Create RPM build tree
-  shell: |
-    mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
-    echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+    - name: Create slurm directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ slurm_user }}"
+        group: "{{ slurm_group }}"
+        mode: '0755'
+      loop: "{{ slurm_dirs }}"
 
-- name: Copy slurm tarball
-  copy:
-    src: slurm-24.11.5.tar.bz2
-    dest: ~/rpmbuild/SOURCES/
+    - name: Upload Slurm RPM packages
+      copy:
+        src: "{{ slurm_rpm_src_dir }}/"
+        dest: "{{ slurm_rpm_dest_dir }}/"
+        mode: '0644'
+      delegate_to: localhost
+      # 如果需要，可以加 recursive: yes
 
-- name: Build RPM from tarball
-  shell: |
-    cd ~/rpmbuild/SOURCES
-    rpmbuild -ta slurm-24.11.5.tar.bz2
-  args:
-    creates: ~/rpmbuild/RPMS
+    - name: Install Slurm RPM packages
+      yum:
+        name: "{{ slurm_rpm_dest_dir }}/*.rpm"
+        state: present
+      notify:
+        - restart slurmctld
+        - restart slurmd
 
-- name: Install built Slurm RPMs
-  shell: |
-    yum -y localinstall ~/rpmbuild/RPMS/x86_64/*.rpm
+    - name: Render slurm.conf from template
+      template:
+        src: slurm.conf.j2
+        dest: "{{ slurm_conf_path }}"
+        owner: "{{ slurm_user }}"
+        group: "{{ slurm_group }}"
+        mode: '0644'
 
-- name: Create slurm config directory
-  file:
-    path: /usr/local/etc/slurm
-    state: directory
+    - name: Enable and start slurmctld on controller node
+      systemd:
+        name: slurmctld
+        enabled: yes
+        state: started
+      when: inventory_hostname == groups['slurm_controller'][0]
 
-- name: Render slurm.conf
-  template:
-    src: slurm.conf.j2
-    dest: /usr/local/etc/slurm/slurm.conf
+    - name: Enable and start slurmd on all nodes
+      systemd:
+        name: slurmd
+        enabled: yes
+        state: started
 
-- name: Enable and start slurmctld on controller
-  systemd:
-    name: slurmctld
-    enabled: true
-    state: started
-  when: inventory_hostname == groups['slurm_controller'][0]
+    - name: restart slurmctld
+      systemd:
+        name: slurmctld
+        state: restarted
 
-- name: Enable and start slurmd on all nodes
-  systemd:
-    name: slurmd
-    enabled: true
-    state: started
-
-- name: restart slurmctld
-  systemd:
-    name: slurmctld
-    state: restarted
-
-- name: restart slurmd
-  systemd:
-    name: slurmd
-    state: restarted
+    - name: restart slurmd
+      systemd:
+        name: slurmd
+        state: restarted

@@ -5,7 +5,12 @@ slurm_group: "slurm"
 slurm_install_prefix: "/usr/local/slurm"
 slurm_rpm_build_dir: "/root/rpmbuild"
 slurm_conf_path: "/etc/slurm/slurm.conf"
-slurm_control_machine: "master1"  # 控制节点主机名
+slurm_control_machine: "master1"  # 控制节点主机
+slurm_dirs:
+  - /etc/slurm
+  - /var/spool/slurmctld
+  - /var/spool/slurmd
+  - /var/log/slurm
 slurm_nodes:
   - name: "node[1-3]"
     cpus: 4
