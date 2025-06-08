@@ -3,9 +3,10 @@ slurm_tarball: "slurm-{{ slurm_version }}.tar.bz2"
 slurm_user: "slurm"
 slurm_group: "slurm"
 slurm_install_prefix: "/usr/local/slurm"
-slurm_rpm_build_dir: "/root/rpmbuild"
 slurm_conf_path: "/etc/slurm/slurm.conf"
 slurm_control_machine: "master1"  # 控制节点主机
+slurm_rpm_src_dir: slurm_rpms          # 对应的是 files 目录下的子目录名
+slurm_rpm_dest_dir: /tmp/slurm_rpms    # 拷贝到目标节点的路径
 slurm_dirs:
   - /etc/slurm
   - /var/spool/slurmctld
