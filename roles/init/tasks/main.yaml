@@ -18,13 +18,6 @@
   ignore_errors: yes
 
 
-- name: 安装 wget 和 epel-release（如果还没装）
-  yum:
-    name:
-      - wget
-      - epel-release
-    state: present
-
 
 - name: 备份原 YUM 源配置
   shell: cp -r /etc/yum.repos.d /etc/yum.repos.d.bak
@@ -37,6 +30,13 @@
     dest: /etc/yum.repos.d/CentOS-Base.repo
     mode: '0644'
   when: ansible_distribution_major_version == "7"
+
+- name: 安装 wget 和 epel-release（如果还没装）
+  yum:
+    name:
+      - wget
+      - epel-release
+    state: present
 
 
 - name: 清理缓存并生成新缓存
