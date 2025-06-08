@@ -16,6 +16,10 @@ SlurmUser=slurm
 StateSaveLocation=/var/spool/slurmctld
 TaskPlugin=task/affinity,task/cgroup
 
+
+DefMemPerCPU=0
+
+
 InactiveLimit=0
 KillWait=30
 MinJobAge=300
@@ -35,7 +39,7 @@ SlurmdLogFile=/var/log/slurmd.log
 
 # COMPUTE NODES
 {% for host in groups['slurm_nodes'] %}
-NodeName={{ host }} CPUs={{ hostvars[host]['cpus'] | default(2) }} RealMemory={{ hostvars[host]['mem'] | default(4096) }} State=UNKNOWN
+NodeName={{ host }} CPUs={{ hostvars[host]['cpus'] | default(2) }} RealMemory={{ hostvars[host]['mem'] | default(0) }} State=UNKNOWN
 {% endfor %}
 
 PartitionName=debug Nodes=ALL Default=YES MaxTime=INFINITE State=UP

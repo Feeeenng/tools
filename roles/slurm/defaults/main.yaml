@@ -15,5 +15,5 @@ slurm_dirs:
 slurm_nodes:
   - name: "node[1-3]"
     cpus: 4
-    real_memory: 4096
+    mem: 0
     state: "UNKNOWN"
