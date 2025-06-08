@@ -1,5 +1,13 @@
-slurm_version: 24.11.5
-slurm_user: slurm
-slurm_group: slurm
-slurm_prefix: /opt/slurm
-is_controller: true   # 控制节点为 true，计算节点为 false
+slurm_version: "24.11.5"
+slurm_tarball: "slurm-{{ slurm_version }}.tar.bz2"
+slurm_user: "slurm"
+slurm_group: "slurm"
+slurm_install_prefix: "/usr/local/slurm"
+slurm_rpm_build_dir: "/root/rpmbuild"
+slurm_conf_path: "/etc/slurm/slurm.conf"
+slurm_control_machine: "master1"  # 控制节点主机名
+slurm_nodes:
+  - name: "node[1-3]"
+    cpus: 4
+    real_memory: 8192
+    state: "UNKNOWN"
