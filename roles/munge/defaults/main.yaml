@@ -1,0 +1,5 @@
+slurm_version: 24.11.5
+slurm_user: slurm
+slurm_group: slurm
+slurm_prefix: /opt/slurm
+is_controller: true   # 控制节点为 true，计算节点为 false
