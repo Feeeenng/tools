@@ -21,19 +21,16 @@
 
 - name: Upload Slurm RPM packages
   copy:
-    src: "{{ slurm_rpm_src_dir }}/"
+    src: "{{ item }}"
     dest: "{{ slurm_rpm_dest_dir }}/"
     mode: '0644'
-  with_fileglob:
-    - "files/{{ slurm_rpm_src_dir }}/*.rpm"
+  loop: "{{ lookup('fileglob', 'files/' + slurm_rpm_src_dir + '/*.rpm', wantlist=True) }}"
 
 - name: Install Slurm RPM packages
   yum:
-    name: "{{ slurm_rpm_dest_dir }}/*.rpm"
+    name: "{{ slurm_rpm_dest_dir }}/{{ item | basename }}"
     state: present
-  notify:
-    - restart slurmctld
-    - restart slurmd
+  loop: "{{ lookup('fileglob', 'files/' + slurm_rpm_src_dir + '/*.rpm', wantlist=True) | map('basename') | list }}"
 
 - name: Render slurm.conf from template
   template:

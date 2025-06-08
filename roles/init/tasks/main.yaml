@@ -41,3 +41,12 @@
 
 - name: 清理缓存并生成新缓存
   shell: yum clean all && yum makecache
+
+- name: Template /etc/hosts file
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: '0644'
+

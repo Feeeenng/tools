@@ -4,7 +4,7 @@ slurm_user: "slurm"
 slurm_group: "slurm"
 slurm_install_prefix: "/usr/local/slurm"
 slurm_conf_path: "/etc/slurm/slurm.conf"
-slurm_control_machine: "master1"  # 控制节点主机
+slurm_control_machine: "node1"  # 控制节点主机
 slurm_rpm_src_dir: slurm_rpms          # 对应的是 files 目录下的子目录名
 slurm_rpm_dest_dir: /tmp/slurm_rpms    # 拷贝到目标节点的路径
 slurm_dirs:
@@ -15,5 +15,5 @@ slurm_dirs:
 slurm_nodes:
   - name: "node[1-3]"
     cpus: 4
-    real_memory: 8192
+    real_memory: 4096
     state: "UNKNOWN"
