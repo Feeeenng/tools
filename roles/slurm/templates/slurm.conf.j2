@@ -17,7 +17,9 @@ StateSaveLocation=/var/spool/slurmctld
 TaskPlugin=task/affinity,task/cgroup
 
 
-DefMemPerCPU=0
+DefMemPerCPU=1041
+SelectType=select/cons_tres
+SelectTypeParameters=CR_Core_Memory
 
 
 InactiveLimit=0
