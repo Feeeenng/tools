@@ -17,7 +17,7 @@ StateSaveLocation=/var/spool/slurmctld
 TaskPlugin=task/affinity,task/cgroup
 
 
-DefMemPerCPU=1041
+DefMemPerCPU=1000
 SelectType=select/cons_tres
 SelectTypeParameters=CR_Core_Memory
 
@@ -29,8 +29,8 @@ SlurmctldTimeout=120
 SlurmdTimeout=300
 Waittime=0
 
-SchedulerType=sched/backfill
-SelectType=select/cons_tres
+#SchedulerType=sched/backfill
+#SelectType=select/cons_tres
 
 JobCompType=jobcomp/none
 JobAcctGatherFrequency=30
@@ -41,7 +41,7 @@ SlurmdLogFile=/var/log/slurmd.log
 
 # COMPUTE NODES
 {% for host in groups['slurm_nodes'] %}
-NodeName={{ host }} CPUs={{ hostvars[host]['cpus'] | default(2) }} RealMemory={{ hostvars[host]['mem'] | default(0) }} State=UNKNOWN
+NodeName={{ host }} Sockets={{ hostvars[host]['Sockets'] }} CoresPerSocket={{ hostvars[host]['CoresPerSocket'] }} ThreadsPerCore={{ hostvars[host]['ThreadsPerCore'] }} RealMemory={{ hostvars[host]['mem']  }} State=UNKNOWN
 {% endfor %}
 
-PartitionName=debug Nodes=ALL Default=YES MaxTime=INFINITE State=UP
+PartitionName=compute Nodes=ALL Default=YES MaxTime=INFINITE State=UP

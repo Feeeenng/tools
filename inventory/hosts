@@ -2,15 +2,15 @@
 192.168.124.[33:35]
 
 [munge_master]
-192.168.124.33
+192.168.4.132
 
 [slurm_controller]
-node1 ansible_host=192.168.124.33 cpus=2 mem=4096
+node1 ansible_host=192.168.124.33 Sockets=2 CoresPerSocket=2 ThreadsPerCore=1 mem=1800
 
 [slurm_nodes]
-node1 ansible_host=192.168.124.33 cpus=2 mem=4096
-node2 ansible_host=192.168.124.34 cpus=2 mem=4096
-node3 ansible_host=192.168.124.35 cpus=2 mem=4096
+node1 ansible_host=192.168.124.33 Sockets=2 CoresPerSocket=2 ThreadsPerCore=1 mem=1800
+node2 ansible_host=192.168.124.34 Sockets=2 CoresPerSocket=2 ThreadsPerCore=1 mem=1800
+node3 ansible_host=192.168.124.35 Sockets=2 CoresPerSocket=2 ThreadsPerCore=1 mem=1800
 
 
 [all:vars]
