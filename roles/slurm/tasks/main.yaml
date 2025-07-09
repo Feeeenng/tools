@@ -18,14 +18,14 @@
     state: directory
     owner: "{{ slurm_user }}"
     group: "{{ slurm_group }}"
-    mode: '0755'
+    mode: "0755"
   loop: "{{ slurm_dirs }}"
 
 - name: Upload Slurm RPM packages
   copy:
     src: "{{ item }}"
     dest: "{{ slurm_rpm_dest_dir }}/"
-    mode: '0644'
+    mode: "0644"
   loop: "{{ lookup('fileglob', 'files/' + slurm_rpm_src_dir + '/*.rpm', wantlist=True) }}"
 
 - name: Install Slurm RPM packages
@@ -40,7 +40,7 @@
     dest: "{{ slurm_conf_path }}"
     owner: "{{ slurm_user }}"
     group: "{{ slurm_group }}"
-    mode: '0644'
+    mode: "0644"
 
 - name: Enable and start slurmctld on controller node
   systemd:
@@ -54,3 +54,4 @@
     name: slurmd
     enabled: yes
     state: started
+  when: inventory_hostname != groups['slurm_controller'][0]

@@ -9,6 +9,6 @@
   #  - init
   #  - docker
   #  - munge
-    - slurm
+     - slurm
   #  - nextflow
   #  - apptainer

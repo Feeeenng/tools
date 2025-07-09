@@ -29,11 +29,27 @@ SlurmctldTimeout=120
 SlurmdTimeout=300
 Waittime=0
 
-#SchedulerType=sched/backfill
-#SelectType=select/cons_tres
 
+
+#jobcomp
 JobCompType=jobcomp/none
 JobAcctGatherFrequency=30
+
+#JobCompType=jobcomp/mysql
+#JobAcctGatherFrequency=30
+#JobCompHost=192.168.4.132
+#JobCompUser=slurm
+#JobCompPass=slurm
+#JobCompPort=3306
+#JobCompLoc=/var/log/slurm/slurm_jobcomp.log
+
+#accouning
+#AccountingStorageHost=node1
+#AccountingStoragePort=6819
+#AccountingStorageType=accounting_storage/slurmdbd
+
+
+
 SlurmctldDebug=info
 SlurmctldLogFile=/var/log/slurmctld.log
 SlurmdDebug=info
