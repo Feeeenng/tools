@@ -6,9 +6,9 @@
  
 
   roles:
-  #  - init
+    - init
   #  - docker
   #  - munge
-     - slurm
+  #   - slurm
   #  - nextflow
   #  - apptainer
