@@ -1,14 +1,14 @@
 - name: Create slurm group if not exists
   group:
     name: "{{ slurm_group }}"
-    gid: 986
+    gid: "{{ slrum_uid }}"
     state: present
 
 - name: Ensure slurm user exists
   user:
     name: "{{ slurm_user }}"
     group: "{{ slurm_group }}"
-    uid: 986
+    uid:  "{{ slurm_uid }}"
     createhome: no
     system: yes
 

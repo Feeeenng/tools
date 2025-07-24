@@ -18,7 +18,6 @@
   ignore_errors: yes
 
 
-
 - name: 备份原 YUM 源配置
   shell: cp -r /etc/yum.repos.d /etc/yum.repos.d.bak
   args:
