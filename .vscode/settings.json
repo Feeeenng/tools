@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "slurm"
-    ]
+    ],
+    "ansible.python.interpreterPath": "/bin/python"
 }

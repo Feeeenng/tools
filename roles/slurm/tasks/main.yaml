@@ -1,3 +1,26 @@
+- name: 安装 slrumd devel packages
+  yum:
+    name:
+      - hwloc
+      - hwloc-devel
+      - hdf5-devel
+      - man2html
+      - freeipmi-devel
+      - lua-devel
+      - pam-devel
+      - numactl-devel
+      - readline-devel
+      - pmix-devel
+      - pmix-devel
+      - rdma-core-devel
+      - rrdtool-devel
+      - gtk2-devel
+      - json-c-devel
+      - http-parser-devel
+      - libyaml-devel
+    state: present
+
+
 - name: Create slurm group if not exists
   group:
     name: "{{ slurm_group }}"
@@ -33,6 +56,8 @@
     name: "{{ slurm_rpm_dest_dir }}/{{ item | basename }}"
     state: present
   loop: "{{ lookup('fileglob', 'files/' + slurm_rpm_src_dir + '/*.rpm', wantlist=True) | map('basename') | list }}"
+
+
 
 - name: Render slurm.conf from template
   template:
