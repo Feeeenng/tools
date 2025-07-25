@@ -9,7 +9,7 @@
     # - init
   #  - docker
   #  - munge
-    - maridb
+    - mariadb
   #   - slurm
   #  - nextflow
   #  - apptainer

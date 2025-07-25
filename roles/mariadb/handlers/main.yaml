@@ -1,0 +1,7 @@
+---
+- name: restart mariadb
+  service:
+    name: "{{ 'mysql' if ansible_facts['os_family'] == 'Debian' else 'mariadb' }}"
+    state: restarted
+  when:
+    - inventory_hostname == groups['slurm_controller'][0]    
